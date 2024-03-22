@@ -1,7 +1,14 @@
 'use client'
 import Image from "next/image";
 import React,{useState} from "react";
-import {RawNodeDatum, Tree} from 'react-d3-tree'
+import dynamic from "next/dynamic";
+
+import {RawNodeDatum} from 'react-d3-tree'
+
+//dynamically import the tree 
+const Tree=dynamic(()=>import("react-d3-tree"),{
+  ssr:false,
+})
 export default function Home() {
   const [tree,setTree]=useState< RawNodeDatum | RawNodeDatum[] >({
     name: 'root',
