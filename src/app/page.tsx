@@ -16,8 +16,10 @@ export default function Home() {
   });
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    <div className="100vw 100vh">
-      <Tree data={tree}/>
+    <div className="w-screen  h-screen">
+      <Tree data={tree}
+      rootNodeClassName="
+      node__root"/>
     </div> 
     // </main>
   );
