@@ -99,6 +99,8 @@ export default function Home() {
     setTree(tree);
     console.log("so you typed and handleSubmit was fired with --"+name);
   };
+  const nodeSize={x:150,y:150};
+  const foreignObjectProps = { width: nodeSize.x, height: nodeSize.y, x: 20 };
   //create a funciton to set height at which the tree renders
   const heightScreen =window.innerHeight;
   const height=heightScreen/2;
@@ -113,6 +115,10 @@ export default function Home() {
         orientation="horizontal"
         // pathFunc="step"
         translate={{x:100,y:height}}
+        nodeSize={nodeSize}
+        renderCustomNodeElement={(rd3tProps)=>
+        renderForeignObjectNode({...rd3tProps,foreignObjectProps})
+        }
       />
       <AddChildModal  onOpen={Boolean(node)} onClose={onCloseModal}
       onSubmit={handleSubmit}
@@ -121,3 +127,17 @@ export default function Home() {
     // </main>
   );
 }
+//let try and create a custom node layout
+const renderForeignObjectNode=({
+  nodeDatum,foreignObjectProps
+})=>(
+<g>
+    <circle r={15}></circle>
+    {/* `foreignObject` requires width & height to be explicitly set. */}
+    <foreignObject {...foreignObjectProps}>
+      <div style={{ border: "1px solid black", backgroundColor: "#dedede" }}>
+        <h3 style={{ textAlign: "center" }}>{nodeDatum.name}</h3>
+      </div>
+    </foreignObject>
+  </g>
+);
