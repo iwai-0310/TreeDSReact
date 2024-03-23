@@ -8,7 +8,6 @@ const AddChildModal = ({ onClose, onOpen, onSubmit }) => {
   const [name,setName]=useState('');
   return (
     <div>
-      <button onClick={onOpen}>Open modal</button>
       <Modal open={onOpen} onClose={onClose}>
         <h2>Add element:</h2>
         <form >
@@ -29,9 +28,11 @@ const AddChildModal = ({ onClose, onOpen, onSubmit }) => {
           </div>
           <div className="flex items-center justify-center">
             <button
-              type="submit" disabled={!name}
+              type="button" disabled={!name}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={()=>onSubmit(name)}
+              onClick={()=>{onSubmit(name)
+              onClose()
+              }}
             >
               +
             </button>

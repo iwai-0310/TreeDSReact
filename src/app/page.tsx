@@ -14,9 +14,44 @@ const Tree = dynamic(() => import("react-d3-tree"), {
 });
 export default function Home() {
   const [tree, setTree] = useState<RawNodeDatum | RawNodeDatum[]>({
-    name: "root",
+    name: "DLC",
     children: [],
   });
+  const orgChart = {
+    name: 'CEO',
+    children: [
+      {
+        name: 'Manager',
+        attributes: {
+          department: 'Production',
+        },
+        children: [
+          {
+            name: 'Foreman',
+            attributes: {
+              department: 'Fabrication',
+            },
+            children: [
+              {
+                name: 'Worker',
+              },
+            ],
+          },
+          {
+            name: 'Foreman',
+            attributes: {
+              department: 'Assembly',
+            },
+            children: [
+              {
+                name: 'Worker',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
 
   const [node, setNode] = useState<TreeNodeDatum | undefined>(undefined);
   // const [open, setOpen] = useState(false);
@@ -27,7 +62,7 @@ export default function Home() {
   const onCloseModal = () => setNode(undefined);
   //add functin to handle the modal add submission
   const handleSubmit=(name:string)=>{
-    console.log(name);
+    setTree(orgChart)
   };
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
