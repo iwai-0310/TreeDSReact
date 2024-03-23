@@ -140,7 +140,7 @@ const renderForeignObjectNode=({
         
         {nodeDatum.children && (
           <button style={{ width: "100%" }} onClick={toggleNode}>
-            {nodeDatum.__rd3t.collapsed ? "Expand" : "Collapse"}
+            {nodeDatum.__rd3t.collapsed ? <i className="arrow up"></i> : <i className="arrow down"></i>}
           </button>
         )}
       </div>
