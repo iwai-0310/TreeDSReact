@@ -100,7 +100,7 @@ export default function Home() {
     console.log("so you typed and handleSubmit was fired with --"+name);
   };
   const nodeSize={x:150,y:150};
-  const foreignObjectProps = { width: nodeSize.x, height: nodeSize.y, x: 20 };
+  const foreignObjectProps = { width: (nodeSize.x)-50, height: nodeSize.y, x: 20,y: 20 };
   //create a funciton to set height at which the tree renders
   const heightScreen =window.innerHeight;
   const height=heightScreen/2;
@@ -129,7 +129,7 @@ export default function Home() {
 }
 //let try and create a custom node layout
 const renderForeignObjectNode=({
-  nodeDatum,foreignObjectProps
+  nodeDatum,foreignObjectProps,toggleNode
 })=>(
 <g>
     <circle r={15}></circle>
@@ -137,6 +137,12 @@ const renderForeignObjectNode=({
     <foreignObject {...foreignObjectProps}>
       <div style={{ border: "1px solid black", backgroundColor: "#dedede" }}>
         <h3 style={{ textAlign: "center" }}>{nodeDatum.name}</h3>
+        
+        {nodeDatum.children && (
+          <button style={{ width: "100%" }} onClick={toggleNode}>
+            {nodeDatum.__rd3t.collapsed ? "Expand" : "Collapse"}
+          </button>
+        )}
       </div>
     </foreignObject>
   </g>

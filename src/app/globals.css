@@ -19,3 +19,7 @@ body {
 .node__leaf > circle {
   fill: green;
 }
+.node-title {
+  dx: -200;
+  fill: green;
+}
