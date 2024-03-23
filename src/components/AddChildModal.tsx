@@ -3,27 +3,25 @@ import React, { useState } from "react";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 
-const AddChildModal = ({ open, setOpen }) => {
-  // const [open, setOpen] = useState(false);
-  //change state from close to open when open clicked
-  const onOpenModal = () => setOpen(true);
-  //change state from open to close when close clicked
-  const onCloseModal = () => setOpen(false);
+const AddChildModal = ({ onClose, onOpen, onSubmit }) => {
+  //add state to name 
+  const [name,setName]=useState('');
   return (
     <div>
-      <button onClick={onOpenModal}>Open modal</button>
-      <Modal open={open} onClose={onCloseModal}>
+      <button onClick={onOpen}>Open modal</button>
+      <Modal open={onOpen} onClose={onClose}>
         <h2>Add element:</h2>
-        <form>
+        <form >
           <div className="mb-4">
             <label
-              for="childElement"
+              htmlFor="childElement"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Title
+              name
             </label>
             <input
               id="childElement"
+              value={name} onChange={event => setName(event.target.value)}
               type="text"
               placeholder="Enter child element name"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -31,8 +29,9 @@ const AddChildModal = ({ open, setOpen }) => {
           </div>
           <div className="flex items-center justify-center">
             <button
-              type="submit"
+              type="submit" disabled={!name}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={()=>onSubmit(name)}
             >
               +
             </button>
