@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
-import { RawNodeDatum, TreeNodeDatum} from "react-d3-tree";
+import { AddChildrenFunction, RawNodeDatum, TreeNodeDatum} from "react-d3-tree";
 //import HierarchyPointNode from "react-d3-tree";
 import AddChildModal from "@/components/AddChildModal";
 import { Modal } from "react-responsive-modal";
@@ -12,68 +12,107 @@ import { Modal } from "react-responsive-modal";
 const Tree = dynamic(() => import("react-d3-tree"), {
   ssr: false,
 });
+const containerStyles = {
+  width: "100vw",
+  height: "100vh"
+};
+//turn the svg into a sqr
+const renderSqrSvgNode=({nodeDatum,toggleNode})=>(
+  <g>
+  <rect width="20" height="20" x="-10" onClick={toggleNode} />
+  <text fill="black" strokeWidth="1" x="20">
+    {nodeDatum.name}
+  </text>
+  {/* {nodeDatum.attributes?.department && (
+    <text fill="black" x="20" dy="20" strokeWidth="1">
+      Department: {nodeDatum.attributes?.department}
+    </text>
+  )} */}
+</g>
+)
+
+
 export default function Home() {
   const [tree, setTree] = useState<RawNodeDatum | RawNodeDatum[]>({
-    name: "DLC",
-    children: [],
-  });
-  const orgChart = {
-    name: 'CEO',
+      name: 'DLC',
     children: [
       {
-        name: 'Manager',
-        attributes: {
-          department: 'Production',
-        },
-        children: [
-          {
-            name: 'Foreman',
-            attributes: {
-              department: 'Fabrication',
-            },
-            children: [
-              {
-                name: 'Worker',
-              },
-            ],
-          },
-          {
-            name: 'Foreman',
-            attributes: {
-              department: 'Assembly',
-            },
-            children: [
-              {
-                name: 'Worker',
-              },
-            ],
-          },
-        ],
+        name: 'Research',
+        attributes: { },
+        children: [],
       },
+      {
+        name: 'Planning',
+        attributes: { },
+        children: [],
+      },
+      {
+        name: 'Designing',
+        attributes: { },
+        children: [],
+      },
+      {
+        name: 'Manufacturing',
+        attributes: { },
+        children: [],
+      },{
+        name:'Sales/Manufacturing',
+        attributes:{},
+        children:[],
+      }
     ],
-  };
+  });
+  // const orgChart = {
+  //   name: 'DLC',
+  //   children: [
+  //     {
+  //       name: 'Research',
+  //       attributes: { },
+  //       children: [],
+  //     },
+  //     {
+  //       name: 'Planning',
+  //       attributes: { },
+  //       children: [],
+  //     },
+  //     {
+  //       name: 'Designing',
+  //       attributes: { },
+  //       children: [],
+  //     },
+  //     {
+  //       name: 'Manufacturing',
+  //       attributes: { },
+  //       children: [],
+  //     },{
+  //       name:'Sales/Manufacturing',
+  //       attributes:{},
+  //       children:[],
+  //     }
+  //   ],
+  // };
 
   const [node, setNode] = useState<TreeNodeDatum | undefined>(undefined);
-  // const [open, setOpen] = useState(false);
-   //change state from close to open when open clicked
-  // const onOpenModal = () => setOpen(true);
-  //change state from open to close when close clicked
-  // const onCloseModal = () => setOpen(false);
   const onCloseModal = () => setNode(undefined);
   //add functin to handle the modal add submission
   const handleSubmit=(name:string)=>{
-    setTree(orgChart)
+    setTree(tree);
+    console.log("so you typed and handleSubmit was fired with --"+name);
   };
+  //create a funciton to set height at which the tree renders
+  const heightScreen =window.innerHeight;
+  const height=heightScreen/2;
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div className="h-screen w-screen">
       <Tree
         data={tree}
-        onNodeClick={(datum) => setNode(datum.data)}
-        translate={{
-          x: 200,
-          y: 200,
-        }}
+        onNodeClick={(datum) => {setNode(datum.data);
+        console.log('you clicked -> '+datum.data.name)}}
+        // renderCustomNodeElement={renderSqrSvgNode}
+        orientation="horizontal"
+        // pathFunc="step"
+        translate={{x:100,y:height}}
       />
       <AddChildModal  onOpen={Boolean(node)} onClose={onCloseModal}
       onSubmit={handleSubmit}
