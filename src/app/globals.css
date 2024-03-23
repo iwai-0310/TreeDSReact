@@ -14,7 +14,10 @@ body {
 }
 .node__root > circle{
   fill:red;
-  r:1
+  r:1;
+}
+.rd3t-label__title{
+  fill: green;
 }
 .node__leaf > circle {
   fill: green;
