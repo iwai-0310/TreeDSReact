@@ -204,35 +204,6 @@ export default function Home() {
       },
     ],
   });
-  // const orgChart = {
-  //   name: 'DLC',
-  //   children: [
-  //     {
-  //       name: 'Research',
-  //       attributes: { },
-  //       children: [],
-  //     },
-  //     {
-  //       name: 'Planning',
-  //       attributes: { },
-  //       children: [],
-  //     },
-  //     {
-  //       name: 'Designing',
-  //       attributes: { },
-  //       children: [],
-  //     },
-  //     {
-  //       name: 'Manufacturing',
-  //       attributes: { },
-  //       children: [],
-  //     },{
-  //       name:'Sales/Manufacturing',
-  //       attributes:{},
-  //       children:[],
-  //     }
-  //   ],
-  // };
 
   const [node, setNode] = useState<TreeNodeDatum | undefined>(undefined);
   const handleNodeClick = (nodeDatum) => {
@@ -251,18 +222,19 @@ export default function Home() {
     x: 10,
     y: 10,
   };
-  const elem=document.getElementById("#pannel");
-  const bound=elem?.getBoundingClientRect();
-  const xCenter=0;
-  const yCenter=0;
-  if(bound){
-  const xCenter=(bound.left + bound.right) / 2;
-  const yCenter=(bound.top + bound.bottom) / 2;
-}
+//   const elem=document.getElementById("#pannel");
+//   const bound=elem?.getBoundingClientRect();
+//   const xCenter=0;
+//   const yCenter=0;
+//   if(bound){
+//   const xCenter=(bound.left + bound.right) / 2;
+//   const yCenter=(bound.top + bound.bottom) / 2;
+// }
   //create a funciton to set height at which the tree renders
   const heightScreen = typeof window !== "undefined" ? window.innerHeight : 0;
   const heightForTranslate = heightScreen / 2;
-
+  const widthScreen=typeof window !== "undefined" ? window.innerWidth : 0;
+  const widthForDimension=widthScreen ;
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div className="h-screen w-screen " id="pannel">
@@ -275,9 +247,9 @@ export default function Home() {
         // }}
         orientation="horizontal"
         pathFunc="step"
-        translate={{ x: xCenter, y: yCenter }}
+        translate={{ x: 50, y: heightForTranslate }}
         nodeSize={nodeSize}
-        dimensions={{width: 1400,height:500}}
+        dimensions={{width:widthForDimension ,height:(heightForTranslate)*2}}
         //collapsible={false}
         renderCustomNodeElement={(r3dtProps) =>
           renderNodeWithCustomEvents({ ...r3dtProps, handleNodeClick })
