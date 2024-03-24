@@ -3,21 +3,22 @@ import React, { useState } from "react";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 
-const AddChildModal = ({ onClose, onOpen, onSubmit }) => {
+const AddChildModal = ({ nameParent,onClose, onOpen, onSubmit }) => {
   //add state to name 
   const [name,setName]=useState('');
   return (
     <div>
       <Modal open={onOpen} onClose={onClose}>
-        <h2>Add element:</h2>
+        <h2>Add child element to </h2>
         <form >
           <div className="mb-4">
+            <div className="flex justify-center items-center">
             <label
               htmlFor="childElement"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-bold mb-2 align-middle"
             >
-              name
-            </label>
+              {nameParent}
+            </label></div>
             <input
               id="childElement"
               value={name} onChange={event => setName(event.target.value)}

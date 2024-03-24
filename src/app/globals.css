@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -37,4 +36,7 @@ body {
 .down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+.tspan{
+  visibility: hidden;
 }

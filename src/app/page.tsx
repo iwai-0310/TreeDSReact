@@ -3,10 +3,16 @@ import Image from "next/image";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
-import { AddChildrenFunction, RawNodeDatum, TreeNodeDatum} from "react-d3-tree";
+import {
+  AddChildrenFunction,
+  RawNodeDatum,
+  TreeNodeDatum,
+} from "react-d3-tree";
 //import HierarchyPointNode from "react-d3-tree";
 import AddChildModal from "@/components/AddChildModal";
 import { Modal } from "react-responsive-modal";
+import Card from "@/components/Card";
+import ShowParentDataModal from "@/components/showParentDataModal";
 
 //dynamically import the tree
 const Tree = dynamic(() => import("react-d3-tree"), {
@@ -14,52 +20,96 @@ const Tree = dynamic(() => import("react-d3-tree"), {
 });
 const containerStyles = {
   width: "100vw",
-  height: "100vh"
+  height: "100vh",
 };
-//turn the svg into a sqr
-const renderSqrSvgNode=({nodeDatum,toggleNode})=>(
-  <g>
-  <rect width="20" height="20" x="-10" onClick={toggleNode} />
-  <text fill="black" strokeWidth="1" x="20">
-    {nodeDatum.name}
-  </text>
-  {/* {nodeDatum.attributes?.department && (
-    <text fill="black" x="20" dy="20" strokeWidth="1">
-      Department: {nodeDatum.attributes?.department}
-    </text>
-  )} */}
-</g>
-)
-
 
 export default function Home() {
+
+  
+  
   const [tree, setTree] = useState<RawNodeDatum | RawNodeDatum[]>({
-      name: 'DLC',
+    name: "DLC",
     children: [
       {
-        name: 'Research',
-        attributes: { },
-        children: [],
+        name: "Research",
+        attributes: { data: "michael jackson was here" },
+        children: [
+          {
+            name: "External",
+            attributes: {},
+            children: [],
+          },
+          {
+            name: "Internal",
+            attributes: {},
+            children: [],
+          },
+        ],
       },
       {
-        name: 'Planning',
-        attributes: { },
-        children: [],
+        name: "Planning",
+        attributes: {},
+        children: [
+          {
+            name: "PRD",
+            attributes: {},
+            children: [],
+          },
+          {
+            name: "Specs",
+            attributes: {},
+            children: [],
+          },
+        ],
       },
       {
-        name: 'Designing',
-        attributes: { },
-        children: [],
+        name: "Designing",
+        attributes: {},
+        children: [
+          {
+            name: "Hardware",
+            attributes: {},
+            children: [],
+          },
+          {
+            name: "Software",
+            attributes: {},
+            children: [],
+          },
+        ],
       },
       {
-        name: 'Manufacturing',
-        attributes: { },
-        children: [],
-      },{
-        name:'Sales/Manufacturing',
-        attributes:{},
-        children:[],
-      }
+        name: "Manufacturing",
+        attributes: {},
+        children: [
+          {
+            name: "Material",
+            attributes: {},
+            children: [],
+          },
+          {
+            name: "Production",
+            attributes: {},
+            children: [],
+          },
+        ],
+      },
+      {
+        name: "Sales/Manufacturing",
+        attributes: {},
+        children: [
+          {
+            name: "Online",
+            attributes: {},
+            children: [],
+          },
+          {
+            name: "Dealership",
+            attributes: {},
+            children: [],
+          },
+        ],
+      },
     ],
   });
   // const orgChart = {
@@ -93,57 +143,69 @@ export default function Home() {
   // };
 
   const [node, setNode] = useState<TreeNodeDatum | undefined>(undefined);
+  const handleNodeClick=(nodeDatum)=>{
+    setNode(nodeDatum);
+  };
   const onCloseModal = () => setNode(undefined);
   //add functin to handle the modal add submission
-  const handleSubmit=(name:string)=>{
+  const handleSubmit = (name: string) => {
     setTree(tree);
-    console.log("so you typed and handleSubmit was fired with --"+name);
+    console.log("so you typed and handleSubmit was fired with --" + name);
   };
-  const nodeSize={x:150,y:150};
-  const foreignObjectProps = { width: (nodeSize.x)-50, height: nodeSize.y, x: 20,y: 20 };
+  const nodeSize = { x: 200, y: 50 };
+  const foreignObjectProps = {
+    width: nodeSize.x - 100,
+    height: nodeSize.y,
+    x: 10,
+    y: 10,
+  };
   //create a funciton to set height at which the tree renders
-  const heightScreen =window.innerHeight;
-  const height=heightScreen/2;
+  const heightScreen = typeof window !== "undefined" ? window.innerHeight : 0;
+  const height = heightScreen / 2;
+
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div className="h-screen w-screen">
       <Tree
         data={tree}
-        onNodeClick={(datum) => {setNode(datum.data);
-        console.log('you clicked -> '+datum.data.name)}}
-        // renderCustomNodeElement={renderSqrSvgNode}
+        // onNodeClick={(datum) => {
+        //   {
+        //     setNode(datum.data);
+        //   }
+        // }}
         orientation="horizontal"
-        // pathFunc="step"
-        translate={{x:100,y:height}}
+        pathFunc="step"
+        translate={{ x: 100, y: height }}
         nodeSize={nodeSize}
-        renderCustomNodeElement={(rd3tProps)=>
-        renderForeignObjectNode({...rd3tProps,foreignObjectProps})
+        //collapsible={false}
+        renderCustomNodeElement={(r3dtProps)=>
+          renderNodeWithCustomEvents({...r3dtProps,handleNodeClick})
         }
       />
-      <AddChildModal  onOpen={Boolean(node)} onClose={onCloseModal}
-      onSubmit={handleSubmit}
-      />
+      {/* <AddChildModal nameParent={node?.name}  onOpen={Boolean(node)} onClose={onCloseModal}
+      onSubmit={handleSubmit}/> */}
+      {node && (
+      <ShowParentDataModal
+        nodeName={node?.name}
+        onOpen={Boolean(node)}
+        onClose={onCloseModal}
+        nodeAtt={node?.attributes?.data}
+      />)}
+      {/* <Card dataAttibutes={node?.attributes} onOpen={Boolean(node)} onClose={onCloseModal}/> */}
     </div>
     // </main>
   );
 }
 //let try and create a custom node layout
-const renderForeignObjectNode=({
-  nodeDatum,foreignObjectProps,toggleNode
-})=>(
-<g>
-    <circle r={15}></circle>
-    {/* `foreignObject` requires width & height to be explicitly set. */}
-    <foreignObject {...foreignObjectProps}>
-      <div style={{ border: "1px solid black", backgroundColor: "#dedede" }}>
-        <h3 style={{ textAlign: "center" }}>{nodeDatum.name}</h3>
-        
-        {nodeDatum.children && (
-          <button style={{ width: "100%" }} onClick={toggleNode}>
-            {nodeDatum.__rd3t.collapsed ? <i className="arrow up"></i> : <i className="arrow down"></i>}
-          </button>
-        )}
-      </div>
-    </foreignObject>
+const renderNodeWithCustomEvents = ({
+  nodeDatum,
+  toggleNode,
+  handleNodeClick
+}) => (
+  <g>
+    <circle r="5" onClick={() => handleNodeClick(nodeDatum)} />
+    <text fill="black" strokeWidth="1" x="-20" y="30" onClick={toggleNode}>
+      {nodeDatum.name}
+    </text>
   </g>
 );
