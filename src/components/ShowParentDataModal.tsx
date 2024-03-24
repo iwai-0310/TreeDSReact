@@ -15,14 +15,14 @@ const ShowParentDataModal = ({ nodeName,onClose, onOpen,nodeAtt }) => {
     onClose();
   }
   return (
-    <div>
+    <div className=" min-w-24 ">
       <Modal open={onOpen} onClose={handleCloseModal}>
         <form >
           <div className="mb-4">
             <div className="flex justify-center items-center">
             <label
               htmlFor="childElement"
-              className="block text-gray-700 text-sm font-bold mb-2 align-middle"
+              className="block text-gray-700 text-sm font-bold mb-2 align-middle pt-4 px-6"
             >
               {nodeName}
             </label></div>
