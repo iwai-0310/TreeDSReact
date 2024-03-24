@@ -40,3 +40,13 @@ body {
 .tspan{
   visibility: hidden;
 }
+.rectangle {
+  width: 200px;
+  height: 100px;
+  background-color: rgb(197, 30, 30);
+  color: black;
+  /* Add any other styles you want */
+}
+.pannel{
+  
+}
